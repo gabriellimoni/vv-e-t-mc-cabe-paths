@@ -1,14 +1,20 @@
-graph {
-    { rank=same; white}
-    { rank=same; cyan; yellow; pink}
-    { rank=same; red; green; blue}
-    { rank=same; black}
-
-    white -- cyan -- blue
-    white -- yellow -- green
-    white -- pink -- red
-
-    cyan -- green -- black
-    yellow -- red -- black
-    pink -- blue -- black
+digraph cal
+{
+	size="7.5,10"; 
+	ratio=auto;
+	nodesep=0.1;
+	0 -> { 6; 9; };
+	6 [style=bold];
+	9 -> { 15; };
+	15 -> { 21; 34; };
+	21 -> { 15; };
+	34 -> { 42; };
+	42 -> { 48; 105; };
+	48 -> { 55; 62; };
+	55 -> { 62; };
+	62 -> { 79; 89; };
+	79 -> { 96; };
+	96 -> { 42; };
+	89 -> { 96; };
+	105 [style=bold];
 }
