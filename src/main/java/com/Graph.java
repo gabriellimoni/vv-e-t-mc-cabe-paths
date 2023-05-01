@@ -6,7 +6,10 @@ public class Graph {
   private String name;
   private List<Node> nodes;
   private List<Edge> edges;
-  private Node firstNode;
+
+  public Graph copy() {
+    return new Graph().withEdges(edges).withNodes(nodes);
+  }
 
   public Graph() {
   }
@@ -16,10 +19,6 @@ public class Graph {
   }
   public Graph withEdges(List<Edge> edges) {
     setEdges(edges);
-    return this;
-  }
-  public Graph withFirstNode(Node node) {
-    setFirstNode(node);
     return this;
   }
 
@@ -32,7 +31,7 @@ public class Graph {
     this.name = name;
   }
 
-  public List<Node> getNodes() {
+  public List<Node> nodes() {
     return this.nodes;
   }
 
@@ -40,20 +39,36 @@ public class Graph {
     this.nodes = nodes;
   }
 
+  // TODO: include logic to get node that has no edge TO it
   public Node getFirstNode() {
-    return this.firstNode;
+    return nodes.get(0);
   }
 
-  public void setFirstNode(Node firstNode) {
-    this.firstNode = firstNode;
-  }
-
-  public List<Edge> getEdges() {
+  public List<Edge> edges() {
     return this.edges;
   }
 
   public void setEdges(List<Edge> edges) {
     this.edges = edges;
+  }
+
+  public Edge findEdgeByNodes(Node sourceNode, Node targetNode) {
+    for (Edge edge: edges) {
+      if (
+        sourceNode.equals(edge.from()) &&
+        targetNode.equals(edge.to())
+      ) return edge;
+    }
+    return null;
+  }
+
+  public Edge findEdgeByNode(Node sourceNode) {
+    for (Edge edge: edges) {
+      if (
+        sourceNode.equals(edge.from())
+      ) return edge;
+    }
+    return null;
   }
 
   @Override

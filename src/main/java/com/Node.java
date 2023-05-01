@@ -1,5 +1,6 @@
 package com;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import guru.nidi.graphviz.attribute.Color;
@@ -13,6 +14,7 @@ public class Node {
   public Node(String id, String label) {
     this.id = id;
     this.label = label;
+    this.links = new ArrayList<>();
   }
 
   public Node withLinks(List<Edge> links) {
@@ -37,12 +39,16 @@ public class Node {
     this.label = label;
   }
 
-  public List<Edge> getLinks() {
+  public List<Edge> links() {
     return this.links;
   }
 
   public void setLinks(List<Edge> links) {
     this.links = links;
+  }
+
+  public void addLink(Edge link) {
+    this.links.add(link);
   }
 
   public Color getColor() {
@@ -62,5 +68,10 @@ public class Node {
   @Override
   public int hashCode() {
     return id.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return getLabel();
   }
 }

@@ -17,6 +17,7 @@ public class Edge {
   }
   public Edge from(Node from) {
     this.from = from;
+    from.addLink(this);
     return this;
   }
   public Node to() {
@@ -41,5 +42,21 @@ public class Edge {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    String givenId = ((Edge)obj).getId();
+    return id.equals(givenId);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return from().toString() + "->" + to().toString();
   }
 }

@@ -1,5 +1,6 @@
 package com.vvet;
 
+import com.Graph;
 import com.parser.CustomDotParser;
 
 import guru.nidi.graphviz.model.MutableGraph;
@@ -17,7 +18,8 @@ public class App
       // }
 
       try {
-        CustomDotParser.parse("src/assets/example.dot");
+        Graph g = CustomDotParser.parse("src/assets/example.dot");
+        McCabe.run2("cal", g);
       } catch (Exception e) {
         System.out.println(e);
       }
