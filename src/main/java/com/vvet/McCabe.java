@@ -21,7 +21,7 @@ public class McCabe {
       Node node = graph.getFirstNode();
       path.addNode(node);
       selectedNodes.add(node);
-      List<Edge> links = node.links();
+      List<Link> links = node.links();
       if (paths.size() == 0) {
         boolean decisionMarked = false;
         Integer idx = 0;
@@ -30,8 +30,8 @@ public class McCabe {
             decisionMarked = true;
             decisionIndex = idx;
           }
-          Iterator<Edge> it = links.iterator();
-          Edge link = it.next();
+          Iterator<Link> it = links.iterator();
+          Link link = it.next();
           while(path.edgeAlreadyUsed(link)) {
             link = it.next();
           }
@@ -46,8 +46,8 @@ public class McCabe {
         boolean decisionMarked = false;
         Integer idx = 0;
         while(links.size() > 0) {
-          Iterator<Edge> it = links.iterator();
-          Edge link = it.next();
+          Iterator<Link> it = links.iterator();
+          Link link = it.next();
           if (links.size() > 1 && !decisionMarked && idx != decisionIndex) {
             decisionMarked = true;
             decisionIndex = idx;
@@ -84,12 +84,12 @@ public class McCabe {
       Path path = new Path(graph);
       Node node = graph.getFirstNode();
       path.addNode(node);
-      List<Edge> links = node.links();
+      List<Link> links = node.links();
 
       if (previousPath == null) {
         while(links.size() > 0) {
-          Iterator<Edge> it = links.iterator();
-          Edge link = it.next();
+          Iterator<Link> it = links.iterator();
+          Link link = it.next();
           while(path.edgeAlreadyUsed(link)) {
             link = it.next();
           }
@@ -106,8 +106,8 @@ public class McCabe {
         Node firstPathNode = path.nodes().get(path.nodes().size() - 1);
         links = firstPathNode.links();
         while(links.size() > 0) {
-          Iterator<Edge> it = links.iterator();
-          Edge link = it.next();
+          Iterator<Link> it = links.iterator();
+          Link link = it.next();
           if (links.contains(previousPath.getNextEdgeChange())) {
             while (!link.equals(previousPath.getNextEdgeChange())) {
               link = it.next();

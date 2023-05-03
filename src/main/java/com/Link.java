@@ -2,20 +2,20 @@ package com;
 
 import guru.nidi.graphviz.attribute.Color;
 
-public class Edge {
+public class Link {
   private String id;
   private Node from;
   private Node to;
   private Color color;
 
-  public Edge(String id) {
+  public Link(String id) {
     this.id = id;
   }
 
   public Node from() {
     return this.from;
   }
-  public Edge from(Node from) {
+  public Link from(Node from) {
     this.from = from;
     from.addLink(this);
     return this;
@@ -23,7 +23,7 @@ public class Edge {
   public Node to() {
     return this.to;
   }
-  public Edge to(Node to) {
+  public Link to(Node to) {
     this.to = to;
     return this;
   }
@@ -46,7 +46,7 @@ public class Edge {
 
   @Override
   public boolean equals(Object obj) {
-    String givenId = ((Edge)obj).getId();
+    String givenId = ((Link)obj).getId();
     return id.equals(givenId);
   }
 

@@ -6,9 +6,8 @@ import java.util.List;
 public class Path {
   private Graph graph;
   private List<Node> nodes = new ArrayList<>();
-  private List<Edge> edges = new ArrayList<>();
-  private Edge nextEdgeChange = null;
-
+  private List<Link> edges = new ArrayList<>();
+  private Link nextEdgeChange = null;
 
   public Path(Graph graph) {
     this.graph = graph;
@@ -17,7 +16,7 @@ public class Path {
   public void addNode(Node node) {
     this.nodes.add(node);
   }
-  public void addEdge(Edge edge) {
+  public void addEdge(Link edge) {
     this.edges.add(edge);
   }
 
@@ -25,7 +24,7 @@ public class Path {
     return nodes;
   }
 
-  public boolean edgeAlreadyUsed(Edge edge) {
+  public boolean edgeAlreadyUsed(Link edge) {
     if (edges.contains(edge)) {
       return true;
     }
@@ -38,7 +37,7 @@ public class Path {
     Node prevNode = null;
     for (Node n: nodes) {
       if (prevNode != null) {
-        for (Edge e: edges) {
+        for (Link e: edges) {
           if (e.from().equals(prevNode) && e.to().equals(n)) {
             path.addEdge(e);
           }
@@ -52,12 +51,12 @@ public class Path {
     return path;
   }
 
-  public Edge getNextEdgeChange() {
+  public Link getNextEdgeChange() {
     if (nextEdgeChange != null) return nextEdgeChange;
-    Edge nextUnusedEdge = null;
+    Link nextUnusedEdge = null;
 
-    for (Edge e: edges) {
-      for (Edge ge: graph.edges()) {
+    for (Link e: edges) {
+      for (Link ge: graph.edges()) {
         if (!ge.equals(e)) {
           if (nodes.contains(ge.from())) {
             nextUnusedEdge = ge;
@@ -72,7 +71,7 @@ public class Path {
     return nextEdgeChange != null;
   }
 
-  public void setNextEdgeChange(Edge nextEdgeChange) {
+  public void setNextEdgeChange(Link nextEdgeChange) {
     this.nextEdgeChange = nextEdgeChange;
   }
 
@@ -83,7 +82,7 @@ public class Path {
       str += n.toString() + ',';
     }
     str += '\n';
-    for (Edge e: edges) {
+    for (Link e: edges) {
       str += e.toString() + ',';
     }
     str += "\n";

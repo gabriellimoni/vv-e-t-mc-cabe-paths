@@ -8,7 +8,7 @@ import guru.nidi.graphviz.attribute.Color;
 public class Node {
   private String id;
   private String label;
-  private List<Edge> links;
+  private List<Link> links;
   private Color color;
 
   public Node(String id, String label) {
@@ -17,7 +17,7 @@ public class Node {
     this.links = new ArrayList<>();
   }
 
-  public Node withLinks(List<Edge> links) {
+  public Node withLinks(List<Link> links) {
     setLinks(links);
     return this;
   }
@@ -39,15 +39,15 @@ public class Node {
     this.label = label;
   }
 
-  public List<Edge> links() {
+  public List<Link> links() {
     return this.links;
   }
 
-  public void setLinks(List<Edge> links) {
+  public void setLinks(List<Link> links) {
     this.links = links;
   }
 
-  public void addLink(Edge link) {
+  public void addLink(Link link) {
     this.links.add(link);
   }
 

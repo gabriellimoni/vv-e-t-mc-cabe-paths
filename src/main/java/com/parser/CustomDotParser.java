@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.Edge;
+import com.Link;
 import com.Graph;
 import com.Node;
 
@@ -18,7 +18,7 @@ public class CustomDotParser {
 
     Graph graph = new Graph();
     List<Node> nodes = new ArrayList<>();
-    List<Edge> edges = new ArrayList<>();
+    List<Link> edges = new ArrayList<>();
 
     while (line != null) {
       if (line.contains("digraph")) {
@@ -52,7 +52,7 @@ public class CustomDotParser {
           }
           targetNodes.add(targetNode);
           
-          Edge edge = new Edge(nodeSourceId + "->" + targetNodeId)
+          Link edge = new Link(nodeSourceId + "->" + targetNodeId)
             .from(sourceNode)
             .to(targetNode);
           edges.add(edge);

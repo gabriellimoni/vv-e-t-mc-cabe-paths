@@ -5,7 +5,7 @@ import java.util.List;
 public class Graph {
   private String name;
   private List<Node> nodes;
-  private List<Edge> edges;
+  private List<Link> edges;
 
   public Graph copy() {
     return new Graph().withEdges(edges).withNodes(nodes);
@@ -17,7 +17,7 @@ public class Graph {
     setNodes(nodes);
     return this;
   }
-  public Graph withEdges(List<Edge> edges) {
+  public Graph withEdges(List<Link> edges) {
     setEdges(edges);
     return this;
   }
@@ -44,16 +44,16 @@ public class Graph {
     return nodes.get(0);
   }
 
-  public List<Edge> edges() {
+  public List<Link> edges() {
     return this.edges;
   }
 
-  public void setEdges(List<Edge> edges) {
+  public void setEdges(List<Link> edges) {
     this.edges = edges;
   }
 
-  public Edge findEdgeByNodes(Node sourceNode, Node targetNode) {
-    for (Edge edge: edges) {
+  public Link findEdgeByNodes(Node sourceNode, Node targetNode) {
+    for (Link edge: edges) {
       if (
         sourceNode.equals(edge.from()) &&
         targetNode.equals(edge.to())
@@ -62,8 +62,8 @@ public class Graph {
     return null;
   }
 
-  public Edge findEdgeByNode(Node sourceNode) {
-    for (Edge edge: edges) {
+  public Link findEdgeByNode(Node sourceNode) {
+    for (Link edge: edges) {
       if (
         sourceNode.equals(edge.from())
       ) return edge;
