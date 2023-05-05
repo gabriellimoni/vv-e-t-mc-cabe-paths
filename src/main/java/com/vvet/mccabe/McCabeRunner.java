@@ -100,13 +100,13 @@ public class McCabeRunner {
   private Link getNextLink(Path currentPath, List<Link> links) {
     Iterator<Link> it = links.iterator();
     Link nextLink = it.next();
-    while(currentPath.edgeAlreadyUsed(nextLink)) {
+    while(currentPath.linkAlreadyUsed(nextLink)) {
       nextLink = it.next();
     }
     List<Link> remainingLinks = new ArrayList<>(links);
     remainingLinks.remove(nextLink);
     for (Link l : remainingLinks) {
-      if (!currentPath.edgeAlreadyUsed(l)) {
+      if (!currentPath.linkAlreadyUsed(l)) {
         if (basePath == null || linksToIterate.size() == 0) {
           linksToIterate.add(l);
         }

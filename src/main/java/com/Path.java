@@ -7,8 +7,6 @@ public class Path {
   private Graph graph;
   private List<Node> nodes = new ArrayList<>();
   private List<Link> links = new ArrayList<>();
-  private List<Link> optedLinks = new ArrayList<>();
-  private Link nextEdgeChange = null;
   private List<GraphItem> graphItems = new ArrayList();
 
   public Path(Graph graph) {
@@ -37,15 +35,8 @@ public class Path {
     return links;
   }
 
-  public boolean edgeAlreadyUsed(Link edge) {
+  public boolean linkAlreadyUsed(Link edge) {
     if (links.contains(edge)) {
-      return true;
-    }
-    return false;
-  }
-
-  public boolean edgeAlreadyOpted(Link edge) {
-    if (optedLinks.contains(edge)) {
       return true;
     }
     return false;
@@ -71,30 +62,6 @@ public class Path {
     return path;
   }
 
-  public Link getNextEdgeChange() {
-    if (nextEdgeChange != null) return nextEdgeChange;
-    Link nextUnusedEdge = null;
-
-    for (Link e: links) {
-      for (Link ge: graph.links()) {
-        if (!ge.equals(e)) {
-          if (nodes.contains(ge.from())) {
-            nextUnusedEdge = ge;
-          }
-        }
-      }
-    }
-
-    return nextUnusedEdge;
-  }
-  public boolean hasNextEdgeChange() {
-    return nextEdgeChange != null;
-  }
-
-  public void setNextEdgeChange(Link nextEdgeChange) {
-    this.nextEdgeChange = nextEdgeChange;
-  }
-
   @Override
   public String toString() {
     String str = "";
@@ -107,9 +74,5 @@ public class Path {
 
   public Integer size() {
     return graphItems.size();
-  }
-
-  public void optedLink(Link link) {
-    optedLinks.add(link);
   }
 }

@@ -68,7 +68,7 @@ public class CustomDotParser {
     reader.close();
 
     graph.setNodes(nodes);
-    graph.setEdges(edges);
+    graph.setLinks(edges);
     return graph;
   }
 }

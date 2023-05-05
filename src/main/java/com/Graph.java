@@ -18,7 +18,7 @@ public class Graph {
     return this;
   }
   public Graph withEdges(List<Link> edges) {
-    setEdges(edges);
+    setLinks(edges);
     return this;
   }
 
@@ -52,27 +52,8 @@ public class Graph {
     return this.edges;
   }
 
-  public void setEdges(List<Link> edges) {
+  public void setLinks(List<Link> edges) {
     this.edges = edges;
-  }
-
-  public Link findEdgeByNodes(Node sourceNode, Node targetNode) {
-    for (Link edge: edges) {
-      if (
-        sourceNode.equals(edge.from()) &&
-        targetNode.equals(edge.to())
-      ) return edge;
-    }
-    return null;
-  }
-
-  public Link findEdgeByNode(Node sourceNode) {
-    for (Link edge: edges) {
-      if (
-        sourceNode.equals(edge.from())
-      ) return edge;
-    }
-    return null;
   }
 
   @Override
