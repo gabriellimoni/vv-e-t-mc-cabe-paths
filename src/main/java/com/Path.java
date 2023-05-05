@@ -6,8 +6,10 @@ import java.util.List;
 public class Path {
   private Graph graph;
   private List<Node> nodes = new ArrayList<>();
-  private List<Link> edges = new ArrayList<>();
+  private List<Link> links = new ArrayList<>();
+  private List<Link> optedLinks = new ArrayList<>();
   private Link nextEdgeChange = null;
+  private List<GraphItem> graphItems = new ArrayList();
 
   public Path(Graph graph) {
     this.graph = graph;
@@ -15,17 +17,35 @@ public class Path {
 
   public void addNode(Node node) {
     this.nodes.add(node);
+    this.graphItems.add(node);
   }
+  @Deprecated
   public void addEdge(Link edge) {
-    this.edges.add(edge);
+    this.links.add(edge);
+    this.graphItems.add(edge);
+  }
+  public void addLink(Link link) {
+    this.links.add(link);
+    this.graphItems.add(link);
   }
 
   public List<Node> nodes() {
     return nodes;
   }
 
+  public List<Link> links() {
+    return links;
+  }
+
   public boolean edgeAlreadyUsed(Link edge) {
-    if (edges.contains(edge)) {
+    if (links.contains(edge)) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean edgeAlreadyOpted(Link edge) {
+    if (optedLinks.contains(edge)) {
       return true;
     }
     return false;
@@ -37,9 +57,9 @@ public class Path {
     Node prevNode = null;
     for (Node n: nodes) {
       if (prevNode != null) {
-        for (Link e: edges) {
-          if (e.from().equals(prevNode) && e.to().equals(n)) {
-            path.addEdge(e);
+        for (Link l: links) {
+          if (l.from().equals(prevNode) && l.to().equals(n)) {
+            path.addEdge(l);
           }
         }
       }
@@ -55,8 +75,8 @@ public class Path {
     if (nextEdgeChange != null) return nextEdgeChange;
     Link nextUnusedEdge = null;
 
-    for (Link e: edges) {
-      for (Link ge: graph.edges()) {
+    for (Link e: links) {
+      for (Link ge: graph.links()) {
         if (!ge.equals(e)) {
           if (nodes.contains(ge.from())) {
             nextUnusedEdge = ge;
@@ -81,11 +101,15 @@ public class Path {
     for (Node n: nodes) {
       str += n.toString() + ',';
     }
-    str += '\n';
-    for (Link e: edges) {
-      str += e.toString() + ',';
-    }
     str += "\n";
     return str;
+  }
+
+  public Integer size() {
+    return graphItems.size();
+  }
+
+  public void optedLink(Link link) {
+    optedLinks.add(link);
   }
 }

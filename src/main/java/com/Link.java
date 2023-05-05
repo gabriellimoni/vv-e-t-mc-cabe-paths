@@ -2,7 +2,7 @@ package com;
 
 import guru.nidi.graphviz.attribute.Color;
 
-public class Link {
+public class Link implements GraphItem {
   private String id;
   private Node from;
   private Node to;

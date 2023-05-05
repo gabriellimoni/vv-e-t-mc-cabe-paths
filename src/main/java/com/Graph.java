@@ -44,7 +44,11 @@ public class Graph {
     return nodes.get(0);
   }
 
+  @Deprecated
   public List<Link> edges() {
+    return this.edges;
+  }
+  public List<Link> links() {
     return this.edges;
   }
 

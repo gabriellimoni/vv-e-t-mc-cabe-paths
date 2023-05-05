@@ -5,7 +5,7 @@ import java.util.List;
 
 import guru.nidi.graphviz.attribute.Color;
 
-public class Node {
+public class Node implements GraphItem {
   private String id;
   private String label;
   private List<Link> links;
