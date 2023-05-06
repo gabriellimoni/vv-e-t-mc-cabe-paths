@@ -24,7 +24,6 @@ public class Graph {
     return this;
   }
 
-  // GETTERS AND SETTERS
   public String getName() {
     return this.name;
   }
@@ -41,7 +40,6 @@ public class Graph {
     this.nodes = nodes;
   }
 
-  // TODO: include logic to get node that has no edge TO it
   public Node getFirstNode() throws IOException {
     List<Node> nodesWithoutLinkTo = new ArrayList<>(nodes());
     for (Link l : links()) {

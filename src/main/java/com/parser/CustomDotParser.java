@@ -10,7 +10,6 @@ import com.Link;
 import com.Graph;
 import com.Node;
 
-// TODO: test
 public class CustomDotParser {
   public static Graph parse(String path) throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader(path));

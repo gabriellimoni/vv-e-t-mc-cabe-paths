@@ -22,7 +22,6 @@ public class Node implements GraphItem {
     return this;
   }
 
-  // GETTERS AND SETTERS
   public String getId() {
     return this.id;
   }
