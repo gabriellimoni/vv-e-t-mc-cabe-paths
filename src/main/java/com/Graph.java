@@ -45,7 +45,6 @@ public class Graph {
     for (Link l : links()) {
       nodesWithoutLinkTo.remove(l.to());
     }
-    System.out.println(nodesWithoutLinkTo.size());
     if (nodesWithoutLinkTo.size() > 1) {
       throw new IOException("Graph has more than one starting nodes");
     }

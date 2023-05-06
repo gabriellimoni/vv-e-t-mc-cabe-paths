@@ -28,12 +28,12 @@ public class McCabeRunner {
 
   // works only with single ended CFG
   public void run() throws IOException {
+    Integer complexity = graph.links().size() - graph.nodes().size() + 2;
+    System.out.println("Total paths: " + complexity);
+    
     Path path = getFirstPath();
     setBasePath(path);
     addPath(path);
-
-    Integer complexity = graph.links().size() - graph.nodes().size() + 2;
-    System.out.println(complexity);
     
     while (paths.size() < complexity) {
       if (linksToIterate.size() == 0) {
@@ -43,32 +43,29 @@ public class McCabeRunner {
             notUsedLinks.add(l);
           }
         }
-        for (Link l : notUsedLinks) {
-          while (!basePath.nodes().contains(l.from())) {
-            basePath = paths.get(paths.indexOf(basePath) + 1);
-          }
-          Path secondaryPath = basePath.copyUntil(l.from());
-          secondaryPath.addLink(l);
-          wentThrough(l);
-          secondaryPath.addNode(l.to());
-          followBasicPath(l.to(), secondaryPath);
-          addPath(secondaryPath);
-          break;
+        Link nextLink = notUsedLinks.get(0);
+        while (!basePath.nodes().contains(nextLink.from())) {
+          basePath = paths.get(paths.indexOf(basePath) + 1);
         }
-        continue;
+        Path secondaryPath = basePath.copyUntil(nextLink.from());
+        secondaryPath.addLink(nextLink);
+        wentThrough(nextLink);
+        secondaryPath.addNode(nextLink.to());
+        followBasicPath(nextLink.to(), secondaryPath);
+        addPath(secondaryPath);
+      } else {
+        Link nextLink = linksToIterate.remove(0);
+        Path secondaryPath = basePath.copyUntil(nextLink.from());
+        secondaryPath.addLink(nextLink);
+        wentThrough(nextLink);
+        secondaryPath.addNode(nextLink.to());
+        followBasicPath(nextLink.to(), secondaryPath);
+        addPath(secondaryPath);
       }
-
-      Link nextLink = linksToIterate.remove(0);
-      Path secondaryPath = basePath.copyUntil(nextLink.from());
-      secondaryPath.addLink(nextLink);
-      wentThrough(nextLink);
-      secondaryPath.addNode(nextLink.to());
-      followBasicPath(nextLink.to(), secondaryPath);
-      addPath(secondaryPath);
     }
 
-    for (Path p : paths) {
-      System.out.println(p);
+    for (Integer i = 1; i<=paths.size(); i++) {
+      System.out.println(i + ") " + paths.get(i-1));
     }
   }
 
@@ -108,7 +105,7 @@ public class McCabeRunner {
     remainingLinks.remove(nextLink);
     for (Link l : remainingLinks) {
       if (!currentPath.linkAlreadyUsed(l)) {
-        if (basePath == null || linksToIterate.size() == 0) {
+        if (basePath == null) {
           linksToIterate.add(l);
         }
       }
