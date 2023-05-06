@@ -20,7 +20,11 @@ public class CustomDotParser {
     List<Node> nodes = new ArrayList<>();
     List<Link> edges = new ArrayList<>();
 
+    Integer lineCount = 0;
     while (line != null) {
+      if (lineCount == 0 && !line.contains("digraph")) {
+        throw new IOException("Graph is not direct");
+      }
       if (line.contains("digraph")) {
         graph.setName(line.replace("digraph ", ""));
       } else if (line.contains("->")) {
@@ -64,6 +68,7 @@ public class CustomDotParser {
         }
       }
       line = reader.readLine();
+      lineCount++;
     }
     reader.close();
 
