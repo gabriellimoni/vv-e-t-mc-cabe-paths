@@ -1,5 +1,6 @@
 package com.vvet.mccabe;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ public class McCabeRunner {
   }
 
   // works only with single ended CFG
-  public void run() {
+  public void run() throws IOException {
     Path path = getFirstPath();
     setBasePath(path);
     addPath(path);
@@ -71,7 +72,7 @@ public class McCabeRunner {
     }
   }
 
-  private Path getFirstPath() {
+  private Path getFirstPath() throws IOException {
     Path path = new Path(graph);
     Node node = graph.getFirstNode();
     path.addNode(node);

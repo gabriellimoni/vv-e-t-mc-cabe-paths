@@ -1,5 +1,7 @@
 package com;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
@@ -40,8 +42,16 @@ public class Graph {
   }
 
   // TODO: include logic to get node that has no edge TO it
-  public Node getFirstNode() {
-    return nodes.get(0);
+  public Node getFirstNode() throws IOException {
+    List<Node> nodesWithoutLinkTo = new ArrayList<>(nodes());
+    for (Link l : links()) {
+      nodesWithoutLinkTo.remove(l.to());
+    }
+    System.out.println(nodesWithoutLinkTo.size());
+    if (nodesWithoutLinkTo.size() > 1) {
+      throw new IOException("Graph has more than one starting nodes");
+    }
+    return nodesWithoutLinkTo.get(0);
   }
 
   @Deprecated
