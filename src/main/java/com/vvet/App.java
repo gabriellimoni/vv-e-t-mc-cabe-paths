@@ -10,6 +10,7 @@ public class App
     {
       try {
         Graph g = CustomDotParser.parse("src/assets/example.dot");
+        System.out.println(g);
         new McCabeRunner(g, "name").run();
       } catch (Exception e) {
         System.out.println(e);

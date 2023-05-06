@@ -33,6 +33,7 @@ public class McCabeRunner {
     Path path = getFirstPath();
     setBasePath(path);
     addPath(path);
+    System.out.println(path);
     
     while (paths.size() < complexity) {
       if (linksToIterate.size() == 0) {
@@ -42,9 +43,12 @@ public class McCabeRunner {
             notUsedLinks.add(l);
           }
         }
+        // System.out.println(notUsedLinks.size());
         Link nextLink = notUsedLinks.get(0);
         while (!basePath.nodes().contains(nextLink.from())) {
-          basePath = paths.get(paths.indexOf(basePath) + 1);
+          Integer nextIndex = paths.indexOf(basePath) + 1;
+          if (nextIndex > paths.size() - 1 && paths.size() > 1) nextIndex = 0;
+          basePath = paths.get(nextIndex);
         }
         Path secondaryPath = basePath.copyUntil(nextLink.from());
         secondaryPath.addLink(nextLink);
@@ -52,6 +56,7 @@ public class McCabeRunner {
         secondaryPath.addNode(nextLink.to());
         followBasicPath(nextLink.to(), secondaryPath);
         addPath(secondaryPath);
+        System.out.println(secondaryPath);
       } else {
         Link nextLink = linksToIterate.remove(0);
         Path secondaryPath = basePath.copyUntil(nextLink.from());
@@ -60,6 +65,7 @@ public class McCabeRunner {
         secondaryPath.addNode(nextLink.to());
         followBasicPath(nextLink.to(), secondaryPath);
         addPath(secondaryPath);
+        System.out.println(secondaryPath);
       }
     }
 
