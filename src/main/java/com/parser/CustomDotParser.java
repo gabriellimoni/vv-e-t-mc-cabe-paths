@@ -18,7 +18,7 @@ public class CustomDotParser {
 
     Graph graph = new Graph();
     List<Node> nodes = new ArrayList<>();
-    List<Link> edges = new ArrayList<>();
+    List<Link> links = new ArrayList<>();
 
     Integer lineCount = 0;
     while (line != null) {
@@ -56,10 +56,10 @@ public class CustomDotParser {
           }
           targetNodes.add(targetNode);
           
-          Link edge = new Link(nodeSourceId + "->" + targetNodeId)
+          Link link = new Link(nodeSourceId + "->" + targetNodeId)
             .from(sourceNode)
             .to(targetNode);
-          edges.add(edge);
+          links.add(link);
         }
         for (Node targetNode: targetNodes) {
           if (!nodes.contains(targetNode)) {
@@ -73,7 +73,7 @@ public class CustomDotParser {
     reader.close();
 
     graph.setNodes(nodes);
-    graph.setLinks(edges);
+    graph.setLinks(links);
     return graph;
   }
 }

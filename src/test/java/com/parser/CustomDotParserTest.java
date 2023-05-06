@@ -29,6 +29,13 @@ public class CustomDotParserTest {
     Graph graph = CustomDotParser.parse("src/test/java/com/parser/assets/simple.dot");
     assertEquals(graph.links().size(), 2);
     assertEquals(graph.nodes().size(), 3);
+
+    assertEquals(graph.links().get(1).toString(), "0->1");
+    assertEquals(graph.links().get(0).toString(), "1->2");
+
+    assertEquals(graph.nodes().get(0).toString(), "1");
+    assertEquals(graph.nodes().get(1).toString(), "2");
+    assertEquals(graph.nodes().get(2).toString(), "0");
   }
   @Test
   public void shouldReturnNodeZeroAsFirst() throws IOException {
