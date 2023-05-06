@@ -23,7 +23,7 @@ public class McCabeRunner {
     paths = new ArrayList<>();
   }
 
-  public void run() throws IOException {
+  public List<Path> run() throws IOException {
     Integer complexity = graph.complexity();
     System.out.println("Total paths: " + complexity);
     
@@ -32,12 +32,7 @@ public class McCabeRunner {
     addPath(path);
     
     while (paths.size() < complexity) {
-      Link nextLink = missingLinks.remove(0);
-      while (!basePath.nodes().contains(nextLink.from())) {
-        Integer nextIndex = paths.indexOf(basePath) + 1;
-        if (nextIndex > paths.size() - 1 && paths.size() > 1) nextIndex = 0;
-        setBasePath(paths.get(nextIndex));
-      }
+      Link nextLink = getNextDecisionLink();
       Path secondaryPath = basePath.copyUntil(nextLink.from());
       secondaryPath.addLink(nextLink);
       secondaryPath.addNode(nextLink.to());
@@ -48,6 +43,7 @@ public class McCabeRunner {
     for (Integer i = 1; i<=paths.size(); i++) {
       System.out.println(i + ") " + paths.get(i-1));
     }
+    return paths;
   }
 
   private Path getFirstPath() throws IOException {
@@ -67,7 +63,7 @@ public class McCabeRunner {
       else if (links.size() == 1) {
         nextLink = links.get(0);
       } else {
-        nextLink = getNextLink(path, links);
+        nextLink = getNextBasicLink(path, links);
       }
       node = nextLink.to();
 
@@ -75,12 +71,22 @@ public class McCabeRunner {
       path.addNode(node);
     } while (node.links().size() > 0);
   }
-  private Link getNextLink(Path currentPath, List<Link> links) {
+  private Link getNextBasicLink(Path currentPath, List<Link> links) {
     Iterator<Link> it = links.iterator();
     Link nextLink = it.next();
     missingLinks.remove(nextLink);
     while(currentPath.linkAlreadyUsed(nextLink)) {
       nextLink = it.next();
+    }
+    return nextLink;
+  }
+
+  private Link getNextDecisionLink() {
+    Link nextLink = missingLinks.remove(0);
+    while (!basePath.nodes().contains(nextLink.from())) {
+      Integer nextIndex = paths.indexOf(basePath) + 1;
+      if (nextIndex > paths.size() - 1 && paths.size() > 1) nextIndex = 0;
+      setBasePath(paths.get(nextIndex));
     }
     return nextLink;
   }
