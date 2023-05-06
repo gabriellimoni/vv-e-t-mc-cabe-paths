@@ -26,9 +26,8 @@ public class McCabeRunner {
     paths = new ArrayList<>();
   }
 
-  // works only with single ended CFG
   public void run() throws IOException {
-    Integer complexity = graph.links().size() - graph.nodes().size() + 2;
+    Integer complexity = graph.complexity();
     System.out.println("Total paths: " + complexity);
     
     Path path = getFirstPath();

@@ -67,4 +67,12 @@ public class Graph {
   public String toString() {
     return getName() + "\n" + "Nodes size: " + nodes.size() + "\n" + "Edges size: " + edges.size();
   }
+
+  public Integer complexity() {
+    List<Node> endingNodes = new ArrayList<>();
+    for (Node n : nodes()) {
+      if (n.links().size() == 0) endingNodes.add(n);
+    }
+    return links().size() - nodes().size() + endingNodes.size() + 1;
+  }
 }
