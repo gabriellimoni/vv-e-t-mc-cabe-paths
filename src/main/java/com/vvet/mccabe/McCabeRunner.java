@@ -2,10 +2,8 @@ package com.vvet.mccabe;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.Graph;
 import com.Link;
@@ -17,7 +15,6 @@ public class McCabeRunner {
   private String name;
   private Path basePath;
   private List<Path> paths;
-  private Set<Link> activatedLinks = new HashSet<>();
   private List<Link> missingLinks = new ArrayList<>();
 
   public McCabeRunner(Graph graph, String name) {
@@ -43,7 +40,6 @@ public class McCabeRunner {
       }
       Path secondaryPath = basePath.copyUntil(nextLink.from());
       secondaryPath.addLink(nextLink);
-      wentThrough(nextLink);
       secondaryPath.addNode(nextLink.to());
       followBasicPath(nextLink.to(), secondaryPath);
       addPath(secondaryPath);
@@ -76,7 +72,6 @@ public class McCabeRunner {
       node = nextLink.to();
 
       path.addLink(nextLink);
-      wentThrough(nextLink);
       path.addNode(node);
     } while (node.links().size() > 0);
   }
@@ -96,9 +91,8 @@ public class McCabeRunner {
 
   private void setBasePath(Path path) {
     if (basePath == null) {
-      List<Link> missingLinks = new ArrayList<>();
       for (Node n : graph.nodes()) {
-        if (n.links().size() > 1) {
+        if (n.isDecisionPoint()) {
           if (path.nodes().contains(n)){
             missingLinks.addAll(n.links().subList(1, n.links().size()));
           } else {
@@ -106,12 +100,11 @@ public class McCabeRunner {
           }
         }
       }
-      this.missingLinks = missingLinks;
     }
     this.basePath = path;
   }
 
-  private void wentThrough(Link link) {
-    activatedLinks.add(link);
+  public String getName() {
+    return name;
   }
 }

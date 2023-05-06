@@ -73,4 +73,8 @@ public class Node implements GraphItem {
   public String toString() {
     return getLabel();
   }
+
+  public boolean isDecisionPoint() {
+    return links().size() > 1;
+  }
 }
