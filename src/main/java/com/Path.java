@@ -68,7 +68,6 @@ public class Path {
     for (Node n: nodes) {
       str += n.toString() + ',';
     }
-    str += "\n";
     return str;
   }
 

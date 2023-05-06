@@ -18,7 +18,7 @@ public class McCabeRunner {
   private Path basePath;
   private List<Path> paths;
   private Set<Link> activatedLinks = new HashSet<>();
-  private List<Link> linksToIterate = new ArrayList<>();
+  private List<Link> missingLinks = new ArrayList<>();
 
   public McCabeRunner(Graph graph, String name) {
     this.graph = graph;
@@ -33,40 +33,20 @@ public class McCabeRunner {
     Path path = getFirstPath();
     setBasePath(path);
     addPath(path);
-    System.out.println(path);
     
     while (paths.size() < complexity) {
-      if (linksToIterate.size() == 0) {
-        List<Link> notUsedLinks = new ArrayList<>();
-        for (Link l : graph.links()) {
-          if (!activatedLinks.contains(l)) {
-            notUsedLinks.add(l);
-          }
-        }
-        // System.out.println(notUsedLinks.size());
-        Link nextLink = notUsedLinks.get(0);
-        while (!basePath.nodes().contains(nextLink.from())) {
-          Integer nextIndex = paths.indexOf(basePath) + 1;
-          if (nextIndex > paths.size() - 1 && paths.size() > 1) nextIndex = 0;
-          basePath = paths.get(nextIndex);
-        }
-        Path secondaryPath = basePath.copyUntil(nextLink.from());
-        secondaryPath.addLink(nextLink);
-        wentThrough(nextLink);
-        secondaryPath.addNode(nextLink.to());
-        followBasicPath(nextLink.to(), secondaryPath);
-        addPath(secondaryPath);
-        System.out.println(secondaryPath);
-      } else {
-        Link nextLink = linksToIterate.remove(0);
-        Path secondaryPath = basePath.copyUntil(nextLink.from());
-        secondaryPath.addLink(nextLink);
-        wentThrough(nextLink);
-        secondaryPath.addNode(nextLink.to());
-        followBasicPath(nextLink.to(), secondaryPath);
-        addPath(secondaryPath);
-        System.out.println(secondaryPath);
+      Link nextLink = missingLinks.remove(0);
+      while (!basePath.nodes().contains(nextLink.from())) {
+        Integer nextIndex = paths.indexOf(basePath) + 1;
+        if (nextIndex > paths.size() - 1 && paths.size() > 1) nextIndex = 0;
+        setBasePath(paths.get(nextIndex));
       }
+      Path secondaryPath = basePath.copyUntil(nextLink.from());
+      secondaryPath.addLink(nextLink);
+      wentThrough(nextLink);
+      secondaryPath.addNode(nextLink.to());
+      followBasicPath(nextLink.to(), secondaryPath);
+      addPath(secondaryPath);
     }
 
     for (Integer i = 1; i<=paths.size(); i++) {
@@ -103,17 +83,9 @@ public class McCabeRunner {
   private Link getNextLink(Path currentPath, List<Link> links) {
     Iterator<Link> it = links.iterator();
     Link nextLink = it.next();
+    missingLinks.remove(nextLink);
     while(currentPath.linkAlreadyUsed(nextLink)) {
       nextLink = it.next();
-    }
-    List<Link> remainingLinks = new ArrayList<>(links);
-    remainingLinks.remove(nextLink);
-    for (Link l : remainingLinks) {
-      if (!currentPath.linkAlreadyUsed(l)) {
-        if (basePath == null) {
-          linksToIterate.add(l);
-        }
-      }
     }
     return nextLink;
   }
@@ -123,6 +95,19 @@ public class McCabeRunner {
   }
 
   private void setBasePath(Path path) {
+    if (basePath == null) {
+      List<Link> missingLinks = new ArrayList<>();
+      for (Node n : graph.nodes()) {
+        if (n.links().size() > 1) {
+          if (path.nodes().contains(n)){
+            missingLinks.addAll(n.links().subList(1, n.links().size()));
+          } else {
+            missingLinks.addAll(n.links().subList(0, n.links().size()));
+          }
+        }
+      }
+      this.missingLinks = missingLinks;
+    }
     this.basePath = path;
   }
 
