@@ -1,5 +1,9 @@
 # Indicador de Caminhos usando Critérios de McCabe
 
+## Pré-requisitos
+
+* Java 18 ou mais recente
+* Maven 3.6 ou mais recente
 
 ## Instalação
 
