@@ -7,7 +7,7 @@ public class Path {
   private Graph graph;
   private List<Node> nodes = new ArrayList<>();
   private List<Link> links = new ArrayList<>();
-  private List<GraphItem> graphItems = new ArrayList();
+  private List<GraphItem> graphItems = new ArrayList<GraphItem>();
 
   public Path(Graph graph) {
     this.graph = graph;
