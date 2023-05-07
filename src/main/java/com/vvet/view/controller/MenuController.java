@@ -64,6 +64,17 @@ public class MenuController {
     return g;
   }
 
+  protected Graph getGraph(String selectedFilePath) {
+    try {
+      Graph graph = CustomDotParser.parse(selectedFilePath);
+      return graph;
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+
+    return null;
+  }
+
   protected List<Path> getMcCabePaths(String selectedFilePath) {
     try {
       Graph mccabe = CustomDotParser.parse(selectedFilePath);
@@ -256,6 +267,14 @@ public class MenuController {
     displayGraphOnMainView(g, selectedFile.getAbsolutePath(), stage);
     List<Path> mccabePaths = getMcCabePaths(selectedFile.getAbsolutePath());
     displayPaths(mccabePaths, stage, selectedFile.getAbsolutePath(), g);
+
+    Graph graph = getGraph(selectedFile.getAbsolutePath());
+    int complexity = graph.complexity();
+    int edges = graph.edges().size();
+    int nodes = graph.nodes().size();
+
+    Label labelComplexity = (Label) stage.getScene().lookup("#labelComplexity");
+    labelComplexity.setText("Complexidade: " + complexity);
   }
 
   @FXML
