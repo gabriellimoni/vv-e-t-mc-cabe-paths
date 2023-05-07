@@ -32,6 +32,6 @@ mvn javafx:run
 ##
 ## Autores
 
-* Kayane Silva - https://github.com/KayRSilva
 * Gabriel Limoni - https://github.com/gabriellimoni
+* Kayane Silva - https://github.com/KayRSilva
 * Vitor Barth - https://github.com/vbob
