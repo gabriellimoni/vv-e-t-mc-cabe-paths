@@ -7,9 +7,13 @@ import com.Node;
 import com.Path;
 import com.parser.CustomDotParser;
 import com.vvet.mccabe.McCabeRunner;
+import guru.nidi.graphviz.attribute.Style;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.Link;
+import guru.nidi.graphviz.model.LinkTarget;
 import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.model.MutableNode;
 import guru.nidi.graphviz.parse.Parser;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,6 +48,7 @@ public class MenuController {
   ) throws IOException {
     Graphviz
       .fromGraph(g)
+      .height(900)
       .render(Format.PNG)
       .toFile(new File(path.replace(".dot", ".png")));
 
@@ -71,18 +77,17 @@ public class MenuController {
   protected void displayPaths(
     List<Path> paths,
     Stage mainStage,
-    String selectedFilePath
+    String selectedFilePath,
+    MutableGraph g
   ) throws IOException {
     Stage secondaryStage = new Stage();
     secondaryStage.setTitle("Caminhos de McCabe");
-    secondaryStage.setWidth(mainStage.getWidth());
-    secondaryStage.setHeight(mainStage.getHeight());
 
     List<Image> images = new ArrayList<Image>();
 
     int index = 0;
     for (Path path : paths) {
-      images.add(generatePathImage(path, index++, selectedFilePath));
+      images.add(generatePathImage(g, path, index++, selectedFilePath));
     }
 
     ImageView pathImageView = new ImageView();
@@ -95,13 +100,22 @@ public class MenuController {
     box.getChildren().add(pathImageView);
     root.getChildren().add(box);
 
-    Button buttonNext = new Button("Próximo");
-    Button buttonPrev = new Button("Anterior");
+    Button buttonNext = new Button("->");
+    Button buttonPrev = new Button("<-");
+
+    Label label = new Label("1 / " + images.size());
 
     buttonNext.setOnAction(event -> {
       int currentIndex = images.indexOf(pathImageView.getImage());
       if (currentIndex < images.size() - 1) {
         pathImageView.setImage(images.get(currentIndex + 1));
+        secondaryStage.setWidth(images.get(currentIndex + 1).getWidth());
+        secondaryStage.setHeight(images.get(currentIndex + 1).getHeight() + 80);
+        buttonPrev.setDisable(false);
+        label.setText((currentIndex + 2) + " / " + images.size());
+      }
+      if (currentIndex == images.size() - 2) {
+        buttonNext.setDisable(true);
       }
     });
 
@@ -109,34 +123,72 @@ public class MenuController {
       int currentIndex = images.indexOf(pathImageView.getImage());
       if (currentIndex > 0) {
         pathImageView.setImage(images.get(currentIndex - 1));
+        secondaryStage.setWidth(images.get(currentIndex - 1).getWidth());
+        secondaryStage.setHeight(images.get(currentIndex - 1).getHeight() + 80);
+        buttonNext.setDisable(false);
+        label.setText((currentIndex) + " / " + images.size());
+
+        if (currentIndex - 1 == 0) {
+          buttonPrev.setDisable(true);
+        }
       }
     });
 
     root.getChildren().add(buttonNext);
-    buttonNext.setTranslateY(secondaryStage.getHeight()-100);
-
     root.getChildren().add(buttonPrev);
-    buttonPrev.setTranslateY(secondaryStage.getHeight()-100);
-    buttonPrev.setTranslateX(secondaryStage.getWidth()-60);
+    root.getChildren().add(label);
+
+    secondaryStage.setWidth(images.get(0).getWidth());
+    secondaryStage.setHeight(images.get(0).getHeight() + 80);
+
+    buttonNext.setTranslateY(5);
+    buttonNext.setTranslateX(55);
+    buttonPrev.setTranslateY(5);
+    buttonPrev.setTranslateX(5);
+    label.setTranslateX(100);
+    label.setTranslateY(10);
+
+    pathImageView.setTranslateY(40);
+    buttonPrev.setDisable(true);
 
     secondaryStage.setScene(scene);
     secondaryStage.show();
   }
 
-  protected Image generatePathImage(Path path, int index, String filePath)
-    throws IOException {
+  protected Image generatePathImage(
+    MutableGraph g,
+    Path path,
+    int index,
+    String filePath
+  ) throws IOException {
+    MutableGraph graph = g.copy().setDirected(true);
     List<Node> nodes = path.nodes();
-    MutableGraph g = mutGraph("Caminho " + index).setDirected(true);
 
     for (Node node : nodes) {
       g.add(mutNode(node.toString()));
     }
 
     for (int i = 0; i < nodes.size() - 1; i++) {
-      g.add(
-        mutNode(nodes.get(i).toString())
-          .addLink(mutNode(nodes.get(i + 1).toString()))
-      );
+      String originNodeName = nodes.get(i).toString();
+      String destinationNodeName = nodes.get(i + 1).toString();
+
+      MutableNode newLinkMutableNode = mutNode(originNodeName)
+        .addLink(
+          to(mutNode(destinationNodeName))
+            .add(guru.nidi.graphviz.attribute.Color.RED)
+        )
+        .add(guru.nidi.graphviz.attribute.Color.RED);
+
+      graph.add(newLinkMutableNode);
+
+      // Color last node
+      if (i == nodes.size() - 2) {
+        graph.add(
+          mutNode(destinationNodeName)
+            .add(Style.FILLED)
+            .add(guru.nidi.graphviz.attribute.Color.RED)
+        );
+      }
     }
 
     String outputImageFile = filePath.replace(
@@ -144,7 +196,41 @@ public class MenuController {
       "_path_" + index + ".png"
     );
 
-    Graphviz.fromGraph(g).render(Format.PNG).toFile(new File(outputImageFile));
+    String outDot = Graphviz.fromGraph(graph).render(Format.DOT).toString();
+    for (int i = 0; i < nodes.size() - 1; i++) {
+      {
+        String originNodeName = nodes.get(i).toString();
+        String destinationNodeName = nodes.get(i + 1).toString();
+
+        // Remove original link
+        for (Link link : graph.edges()) {
+          if (
+            link.from().name().toString().equals(originNodeName) &&
+            link.to().toString().contains(destinationNodeName) &&
+            link.to().toString().contains("digraph")
+          ) {
+            String parsedOriginalDestination = link
+              .to()
+              .toString()
+              .replace("digraph", "\"" + originNodeName + "\" ->");
+
+            String newDestination = parsedOriginalDestination
+              .replace("\"" + destinationNodeName + "\"", "")
+              .replaceAll("(?m)^[ \t]*\r?\n", "");
+
+            outDot = outDot.replace(parsedOriginalDestination, newDestination);
+          }
+        }
+      }
+    }
+
+    MutableGraph outGraph = new Parser().read(outDot);
+
+    Graphviz
+      .fromGraph(outGraph)
+      .height(900)
+      .render(Format.PNG)
+      .toFile(new File(outputImageFile));
     Image outImage = new Image("file://" + outputImageFile);
 
     return outImage;
@@ -165,7 +251,7 @@ public class MenuController {
 
     displayGraphOnMainView(g, selectedFile.getAbsolutePath(), stage);
     List<Path> mccabePaths = getMcCabePaths(selectedFile.getAbsolutePath());
-    displayPaths(mccabePaths, stage, selectedFile.getAbsolutePath());
+    displayPaths(mccabePaths, stage, selectedFile.getAbsolutePath(), g);
   }
 
   @FXML
