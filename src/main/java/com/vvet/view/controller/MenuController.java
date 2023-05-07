@@ -41,6 +41,8 @@ public class MenuController {
   @FXML
   private ImageView originalGraph;
 
+  private Stage secondaryStage = new Stage();
+
   protected MutableGraph displayGraphOnMainView(
     MutableGraph g,
     String path,
@@ -80,7 +82,6 @@ public class MenuController {
     String selectedFilePath,
     MutableGraph g
   ) throws IOException {
-    Stage secondaryStage = new Stage();
     secondaryStage.setTitle("Caminhos de McCabe");
 
     List<Image> images = new ArrayList<Image>();
@@ -238,6 +239,9 @@ public class MenuController {
 
   @FXML
   protected void openFileChooser(ActionEvent event) throws IOException {
+    secondaryStage.hide();
+    secondaryStage = new Stage();
+
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Abrir arquivo .dot");
 
