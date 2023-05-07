@@ -31,7 +31,7 @@ mvn javafx:run
 
 ![Janela de caminhos](./example/fig2.png)
 
-
+4. No caminho de origem do arquivo `.dot` original, também serão criados arquivos `.png` para cada caminho encontrado. 
 
 ##
 ## Autores
