@@ -1,18 +1,41 @@
-## Getting Started
+# Indicador de Caminhos usando Critérios de McCabe
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Pré-requisitos
 
-## Folder Structure
+* Java 18 ou mais recente
+* Maven 3.6 ou mais recente
 
-The workspace contains two folders by default, where:
+## Instalação
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+Para instalar o programa, basta clonar o repositório e instalar as dependências do projeto com Maven:
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+```sh
+git clone https://github.com/gabriellimoni/vv-e-t-mc-cabe-paths ./mccabe
+cd mccabe
+mvn install
+```
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Como usar
 
-## Dependency Management
+1. Para executar o programa, utilize o Maven:
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+```sh
+mvn javafx:run
+```
+
+2. Para abrir o arquivo `.dot` que se deseja analisar, clique no menu `Arquivo` e selecione a opção `Abrir`. Selecione o arquivo `.dot` desejado.
+
+![Menu Arquivo](./example/fig1.png)
+
+3. Em seguida, serão abertas duas janelas, uma exibindo o grafo original e outra exibindo os caminhos encontrados. Utilize as setas na janela da direita para navegar entre os caminhos.
+
+![Janela de caminhos](./example/fig2.png)
+
+4. No caminho de origem do arquivo `.dot` original, também serão criados arquivos `.png` para cada caminho encontrado. 
+
+##
+## Autores
+
+* Gabriel Limoni - https://github.com/gabriellimoni
+* Kayane Silva - https://github.com/KayRSilva
+* Vitor Barth - https://github.com/vbob
