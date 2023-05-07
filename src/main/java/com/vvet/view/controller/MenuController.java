@@ -11,7 +11,6 @@ import guru.nidi.graphviz.attribute.Style;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.Link;
-import guru.nidi.graphviz.model.LinkTarget;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.MutableNode;
 import guru.nidi.graphviz.parse.Parser;
@@ -30,6 +29,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -58,7 +59,7 @@ public class MenuController {
 
     originalGraph.setImage(outImage);
 
-    stage.setWidth(outImage.getWidth() + 30);
+    stage.setWidth(outImage.getWidth() + 170);
     stage.setHeight(outImage.getHeight() + 100);
 
     return g;
@@ -164,6 +165,10 @@ public class MenuController {
     buttonPrev.setDisable(true);
 
     secondaryStage.setScene(scene);
+    secondaryStage.setResizable(false);
+    secondaryStage.setMaximized(false);
+    secondaryStage.setX(mainStage.getX() + mainStage.getWidth() + 30);
+    secondaryStage.setY(mainStage.getY());
     secondaryStage.show();
   }
 
@@ -262,6 +267,7 @@ public class MenuController {
 
     Stage stage = (Stage) menuBar.getScene().getWindow();
     File selectedFile = fileChooser.showOpenDialog(stage);
+
     MutableGraph g = new Parser().read(selectedFile).setDirected(true);
 
     displayGraphOnMainView(g, selectedFile.getAbsolutePath(), stage);
@@ -272,9 +278,28 @@ public class MenuController {
     int complexity = graph.complexity();
     int edges = graph.edges().size();
     int nodes = graph.nodes().size();
+    int exitNodes = graph.endingNodes();
 
     Label labelComplexity = (Label) stage.getScene().lookup("#labelComplexity");
-    labelComplexity.setText("Complexidade: " + complexity);
+    labelComplexity.setText("Compl. Ciclomática: " + complexity);
+    labelComplexity.setTranslateX(stage.getWidth() - 160);
+    labelComplexity.setTranslateY(10);
+    labelComplexity.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
+    Label labelEdges = (Label) stage.getScene().lookup("#labelEdges");
+    labelEdges.setText("Arestas: " + edges);
+    labelEdges.setTranslateX(stage.getWidth() - 160);
+
+    Label labelNodes = (Label) stage.getScene().lookup("#labelNodes");
+    labelNodes.setText("Nós: " + nodes);
+    labelNodes.setTranslateX(stage.getWidth() - 160);
+
+    Label labelExitNodes = (Label) stage.getScene().lookup("#labelExitNodes");
+    labelExitNodes.setText("Saídas: " + exitNodes);
+    labelExitNodes.setTranslateX(stage.getWidth() - 160);
+
+    Label startingLabel = (Label) stage.getScene().lookup("#startingLabel");
+    startingLabel.setText("");
   }
 
   @FXML

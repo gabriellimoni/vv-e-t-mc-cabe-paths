@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
+
   private String name;
   private List<Node> nodes;
   private List<Link> edges;
@@ -13,12 +14,13 @@ public class Graph {
     return new Graph().withEdges(edges).withNodes(nodes);
   }
 
-  public Graph() {
-  }
+  public Graph() {}
+
   public Graph withNodes(List<Node> nodes) {
     setNodes(nodes);
     return this;
   }
+
   public Graph withEdges(List<Link> edges) {
     setLinks(edges);
     return this;
@@ -55,6 +57,7 @@ public class Graph {
   public List<Link> edges() {
     return this.edges;
   }
+
   public List<Link> links() {
     return this.edges;
   }
@@ -65,14 +68,27 @@ public class Graph {
 
   @Override
   public String toString() {
-    return getName() + "\n" + "Nodes size: " + nodes.size() + "\n" + "Edges size: " + edges.size();
+    return (
+      getName() +
+      "\n" +
+      "Nodes size: " +
+      nodes.size() +
+      "\n" +
+      "Edges size: " +
+      edges.size()
+    );
   }
 
   public Integer complexity() {
+    Integer endingNodes = endingNodes();
+    return links().size() - nodes().size() + endingNodes + 1;
+  }
+
+  public Integer endingNodes() {
     List<Node> endingNodes = new ArrayList<>();
     for (Node n : nodes()) {
       if (n.links().size() == 0) endingNodes.add(n);
     }
-    return links().size() - nodes().size() + endingNodes.size() + 1;
+    return endingNodes.size();
   }
 }

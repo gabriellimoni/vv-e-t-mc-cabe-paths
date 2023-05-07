@@ -40,7 +40,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vvet.view.controller.MenuController">
+<VBox prefHeight="100.0" prefWidth="300.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vvet.view.controller.MenuController">
   <children>
     <MenuBar id="menuBar" fx:id="menuBar" VBox.vgrow="NEVER">
       <menus>
@@ -55,9 +55,11 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
             <ImageView fx:id="originalGraph" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <Label fx:id="labelComplexity" layoutX="596.0" layoutY="15.0" text="Label" />
-            <Label fx:id="labelEdges" layoutX="596.0" layoutY="38.0" text="Label" />
-            <Label fx:id="labelNodes" layoutX="596.0" layoutY="63.0" text="Label" />
+            <Label id="labelComplexity" fx:id="labelComplexity" layoutY="60.0" />
+            <Label fx:id="labelEdges" layoutY="30.0" />
+            <Label fx:id="labelNodes" layoutY="15.0" />
+            <Label fx:id="labelExitNodes" layoutY="45.0" />
+            <Label fx:id="startingLabel" layoutX="28.0" layoutY="24.0" text="Abra um arquivo .dot para começar..." />
          </children>
     </AnchorPane>
   </children>
